@@ -1,15 +1,18 @@
 from datetime import datetime
-from sqlmodel import SQLModel
 import uuid
+
+from sqlmodel import SQLModel
 
 class PostCreate(SQLModel):
     description: str
     user_id: uuid.UUID
 
-
-class PostRead (SQLModel):
+class PostRead(SQLModel):
     id: uuid.UUID
     user_id: uuid.UUID
     description: str
     created_at: datetime
-    
+
+class PostUpdate(SQLModel):
+    description: str | None = None
+    user_id: uuid.UUID | None = None
