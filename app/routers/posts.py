@@ -10,6 +10,7 @@ from app.models.comment import Comment
 from app.schemas.like import LikeRead
 from app.models.like import Like
 from app.schemas.comment import CommentCreate, CommentRead
+from app.models.post import Post  
 
 
 router = APIRouter(prefix="/posts", tags=["posts"])
@@ -106,7 +107,7 @@ async def add_like(post_id: str, user_id:str , session:AsyncSession = Depends(ge
 
 @router.post('/{post_id}/comments', response_model=CommentRead, status_code=201)
 async def add_comment(post_id: uuid.UUID, data:CommentCreate, session: AsyncSession = Depends(get_session)):
-    result = await session.execute(select(Post).where(Post.id == post.id))
+    result = await session.execute(select(Post).where(Post.id == post.Id))
     post = result.scalar_one_or_none
 
     if not post: 

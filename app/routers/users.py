@@ -2,6 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 from fastapi import APIRouter, Depends
 from sqlmodel import select
+from app.schemas.post import PostRead
 
 from app.models.user import User
 from app.schemas.user import UserCreate, UserRead, UserUpdate
@@ -54,3 +55,9 @@ async def update_user(user_id: uuid.UUID, data: UserUpdate, session: AsyncSessio
     await session.commit()
     await session.refresh(user)
     return user
+
+@router.get('/{userId}/posts', response_model=List[PostRead], status_code=200)
+async def get_posts_by_user(userId: uuid.UUID, session: AsyncSession = Depends(get_session)):
+    res= await session.execute(select(Post).where(Post.user_id == user_id))
+    return res.scalars().all()
+
